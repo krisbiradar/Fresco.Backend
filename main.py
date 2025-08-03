@@ -39,9 +39,10 @@ async def generate_masks(file: UploadFile = File(...)):
     try:
         # --- Start timing the process ---
         start_time = time.time()
+        image_id = str(uuid.uuid4())
 
         print("Calling Modal function to generate masks...")
-        result_masks = segment_image_function.remote(image_bytes)
+        result_masks = segment_image_function.remote(image_bytes,image_id)
         print("Received result from Modal.")
 
         # --- End timing ---
@@ -49,7 +50,6 @@ async def generate_masks(file: UploadFile = File(...)):
         processing_time = end_time - start_time
 
         # --- Generate a unique ID ---
-        image_id = str(uuid.uuid4())
 
         # --- Structure the response to match the Zod schema ---
         return {
